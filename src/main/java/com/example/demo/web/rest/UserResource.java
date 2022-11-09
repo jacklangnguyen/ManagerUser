@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -24,17 +26,17 @@ public interface UserResource {
 
 
     @Operation(description = "get all user or follow keyword")
-    @GetMapping("getUserList")
+    @GetMapping("getList")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "limit", dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query")})
-    ServiceResponse<PageResponse<User>> getUserList(@RequestPart(required = false) String keyWord ,@Valid @ApiIgnore PageCriteriaRequest pageCriteriaRequest);
+    ResponseEntity<PageResponse<User>> getUserList(@RequestPart(required = false) String keyWord , @Valid @ApiIgnore PageCriteriaRequest pageCriteriaRequest);
 
 
     @Operation(description = "add user")
     @PostMapping("add")
-    ServiceResponse<User> addUser(@Valid @RequestBody User user);
+    ResponseEntity<User> addUser(@Valid @RequestBody User user);
 
 
     @Operation(description = "update user information")
@@ -43,5 +45,5 @@ public interface UserResource {
 
     @Operation(description = "delete User")
     @DeleteMapping("delete")
-    ServiceResponse<Void> deleteUser (@Valid @RequestBody DeleteUserList ids);
+    ResponseEntity<HttpStatus> deleteUser (@Valid @RequestBody DeleteUserList ids);
 }

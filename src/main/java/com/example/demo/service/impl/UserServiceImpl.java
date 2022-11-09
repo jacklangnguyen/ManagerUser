@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity.setEmailId(user.getEmailId());
+        userEntity.setUserId(user.getUserId());
         UserEntity result = userRepository.save(userEntity);
         return result.toUser();
     }
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
             userEntity.setEmailId(user.getEmailId());
             userEntity.setLastName(user.getLastName());
             userEntity.setFirstName(user.getFirstName());
+            userEntity.setUserId(user.getUserId());
             entityManager.flush();
             return userEntity.toUser();
         } catch (EntityNotFoundException ex ) {

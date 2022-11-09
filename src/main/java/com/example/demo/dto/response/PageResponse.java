@@ -21,7 +21,7 @@ public class PageResponse <T>{
 
     public long getTotalPage() {
         long mod = count % (long) limit;
-        long totalPage =- count / limit;
+        long totalPage = count / limit;
         totalPage += mod > 0 ? 1 : 0;
         return totalPage;
     }

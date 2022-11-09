@@ -7,8 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
 @Entity
 @Table
 public class UserEntity {
@@ -16,8 +14,11 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+    @Column(unique = true)
+    private String userId;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String emailId;
 
     public long getId() {
@@ -52,12 +53,21 @@ public class UserEntity {
         this.emailId = emailId;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public User toUser() {
         return User.builder()
                 .id(Long.toString(this.id))
                 .firstName(this.firstName)
                 .lastName(this.lastName)
-                .emailId(this.emailId).build();
+                .emailId(this.emailId)
+                .userId(this.userId).build();
     }
 
 }

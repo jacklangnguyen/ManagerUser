@@ -14,6 +14,7 @@ import com.example.demo.web.rest.model.DeleteUserList;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
@@ -30,17 +31,17 @@ public class UserResourceImpl implements UserResource {
 
     @Override
     @PageCriteriaValidator
-    public ServiceResponse<PageResponse<User>> getUserList(String keyWord, PageCriteriaRequest pageCriteriaRequest) {
+    public ResponseEntity<PageResponse<User>> getUserList(String keyWord, PageCriteriaRequest pageCriteriaRequest) {
         log.info("Rest get User List");
         PageResponse<User> page = userService.findKeywordUser(keyWord, pageCriteriaRequest.getPageCriteria());
-        return ServiceResponse.succed(HttpStatus.OK, page);
+        return new ResponseEntity<>(page, HttpStatus.OK);
     }
 
     @Override
-    public ServiceResponse<User> addUser(User user) {
+    public ResponseEntity<User> addUser(User user) {
         log.debug("Rest add User");
         User result = userService.saveUser(user);
-        return ServiceResponse.succed(HttpStatus.OK, result);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
     @Override
@@ -58,13 +59,13 @@ public class UserResourceImpl implements UserResource {
     }
 
     @Override
-    public ServiceResponse<Void> deleteUser(DeleteUserList ids) {
+    public ResponseEntity<HttpStatus> deleteUser(DeleteUserList ids) {
         log.debug("Rest delete User");
         try {
             this.userService.deleteUser(ids.getIds());
-            return new ServiceResponse<>();
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch ( DataNotFoundException ex ) {
-            return ServiceResponse.error(HttpStatus.NOT_FOUND, "DATA NOT FOUND");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);// (HttpStatus.NOT_FOUND, "DATA NOT FOUND");
         }
     }
 
