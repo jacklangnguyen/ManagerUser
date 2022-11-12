@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
         return result.toUser();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public User updateUser(User user) throws DataNotFoundException, DataConflictException {
         log.debug("rest request updateUser");

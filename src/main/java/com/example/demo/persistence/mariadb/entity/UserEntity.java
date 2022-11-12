@@ -9,7 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class UserEntity {
+public class UserEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

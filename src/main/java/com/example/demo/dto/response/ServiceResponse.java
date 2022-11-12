@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ServiceResponse <T> extends HttpEntity<T> {
+public class ServiceResponse <T> {
     private int code;
     private String message;
     private T data;

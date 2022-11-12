@@ -16,9 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@Controller
+@RestController
 public class UserResourceImpl implements UserResource {
 
 
@@ -31,17 +32,18 @@ public class UserResourceImpl implements UserResource {
 
     @Override
     @PageCriteriaValidator
-    public ResponseEntity<PageResponse<User>> getUserList(String keyWord, PageCriteriaRequest pageCriteriaRequest) {
+    public ServiceResponse<PageResponse<User>> getUserList(String keyWord, PageCriteriaRequest pageCriteriaRequest) {
         log.info("Rest get User List");
         PageResponse<User> page = userService.findKeywordUser(keyWord, pageCriteriaRequest.getPageCriteria());
-        return new ResponseEntity<>(page, HttpStatus.OK);
+        return  ServiceResponse.succed(HttpStatus.OK, page);
     }
 
     @Override
-    public ResponseEntity<User> addUser(User user) {
+    public ServiceResponse<User> addUser(User user) {
         log.debug("Rest add User");
         User result = userService.saveUser(user);
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        System.out.println(user);
+        return ServiceResponse.succed(HttpStatus.OK, result);
     }
 
     @Override
@@ -59,13 +61,13 @@ public class UserResourceImpl implements UserResource {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> deleteUser(DeleteUserList ids) {
+    public ServiceResponse<HttpStatus> deleteUser(DeleteUserList ids) {
         log.debug("Rest delete User");
         try {
             this.userService.deleteUser(ids.getIds());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ServiceResponse.succed(HttpStatus.OK,null);
         } catch ( DataNotFoundException ex ) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);// (HttpStatus.NOT_FOUND, "DATA NOT FOUND");
+            return ServiceResponse.error(HttpStatus.NOT_FOUND, "Data Not Found");// (HttpStatus.NOT_FOUND, "DATA NOT FOUND");
         }
     }
 
